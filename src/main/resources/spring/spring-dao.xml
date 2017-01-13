@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 整合mybatis和spring -->
+	<!-- 配置数据库相关参数 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 数据库连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+
+		<!-- C3P0私有属性 -->
+		<property name="maxPoolSize" value="30"></property>
+		<property name="minPoolSize" value="10"></property>
+		<!-- 获取连接超时时间 -->
+		<property name="checkoutTimeout" value="1000"></property>
+		<!-- 连接失败允许重试次数 -->
+		<property name="acquireRetryAttempts" value="2"></property>
+	</bean>
+	
+	<!-- 配置mybatis的SQLsessionfactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 注入数据库连接池 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 配置mybatis全局配置文件 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<!-- 扫描entity包,使用别名 -->
+		<property name="typeAliasesPackage" value="org.seckill.entity"></property>
+		<!-- 扫描sql配置文件(mapper) -->
+		<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+	</bean>
+	
+	
+	<!-- 配置扫描DAO接口包,动态实现DAO接口,注入到SPRING容器中 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 注入SQLsessionfactory -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+		<!-- 给出需要扫描的DAO接口的包 -->
+		<property name="basePackage" value="org.seckill.dao"></property>
+	</bean>
+	
+	<!-- redisdao不是mybatis范畴的dao,所以需要我们自己配置他的bean,才能在spring里面接受管理 -->
+	<!-- 这个bean用构造方法注入,这样想要使用这个dao就必须要在构造方法上传递IP和PORT -->
+	<bean id="RedisDao" class="org.seckill.dao.cache.RedisDao">
+		<constructor-arg index="0" value="localhost"></constructor-arg>
+		<constructor-arg index="1" value="6379"></constructor-arg>
+	</bean>
+	
+	
+</beans> 

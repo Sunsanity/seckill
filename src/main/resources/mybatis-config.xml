@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<!-- 配置mybatis全局属性 -->
+<configuration>
+	<settings>
+		<!-- 获取数据库自增主键值 -->
+		<setting name="useGeneratedKeys" value="true"/>
+		<!-- 使用列别名替换列名,也就是实体类的属性名称可以和数据库中的字段命名不同,默认不配置就是true -->
+		<setting name="useColumnLabel" value="true"/>
+		<!-- 将数据库中的下划线字段转换为JAVA中的驼峰命名原则 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+</configuration>
