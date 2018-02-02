@@ -54,7 +54,6 @@ redis缓存时需要序列化，JDK默认序列化效率低
 
 + 下载项目 
 
-`clone git@github.com:chencong-plan/seckill.git`
 
 + 修改数据库配置
 
