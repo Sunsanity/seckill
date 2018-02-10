@@ -19,7 +19,7 @@ windows10 + IntelliJ IDEA + Java8 + Tomcat8 + Maven + MySQL + Redis
 
 用户对系统开发的商品进行秒杀。 前端采用BootStrap框架开发前端交互页面 后端采用Spring MVC + Spring + MyBatis开发。 数据库MySQL + Redis缓存
 
-(1).商品表,用户表和抢购成功信息表
+(1).商品表,抢购成功信息表
 
 (2).列表页->详情页->倒计时->显示抢购地址->执行秒杀操作->返回结果
 
